@@ -1,0 +1,19 @@
+{
+  "name": "bb-aug25",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Graphite-Support-Sandbox-Organization/bb-aug25.git"
+  },
+  "author": "bb",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Graphite-Support-Sandbox-Organization/bb-aug25/issues"
+  },
+  "homepage": "https://github.com/Graphite-Support-Sandbox-Organization/bb-aug25#readme"
+}
