@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/Graphite-Support-Sandbox-Organization/bb-aug25/issues"
   },
-  "homepage": "https://github.com/Graphite-Support-Sandbox-Organization/bb-aug25#readme"
+  "homepage": "https://github.com/Graphite-Support-Sandbox-Organization/bb-aug25#readme",
+  "dependencies": {
+    "jest": "^30.0.5"
+  }
 }
