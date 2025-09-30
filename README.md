@@ -22,6 +22,6 @@
 
 # monday mornings testing draft mode
 
-# tuesday is the day
+# tuesday is the day, lets test actions
 
 
