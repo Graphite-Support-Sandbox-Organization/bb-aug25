@@ -22,4 +22,6 @@
 
 # monday mornings testing draft mode
 
+# tuesday is the day
+
 
