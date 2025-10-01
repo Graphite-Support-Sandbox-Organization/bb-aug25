@@ -8,6 +8,6 @@
 
 # without parallel 1
 
-# without paralell 2
+# without paralell 4
 
 # testing submit on prod
