@@ -23,4 +23,4 @@ testing yesterday
 >>>>>>> 5a2ca9e (thursday9-1)
 =======
 # change 2
->>>>>>> e3e97ad (thursday9-2)
+# change 3
