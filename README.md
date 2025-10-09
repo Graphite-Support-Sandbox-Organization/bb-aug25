@@ -19,4 +19,8 @@ testing tomorrow
 testing yesterday
 
 # change 1
+<<<<<<< HEAD
 >>>>>>> 5a2ca9e (thursday9-1)
+=======
+# change 2
+>>>>>>> e3e97ad (thursday9-2)
