@@ -1,30 +1,23 @@
-name: Block Main Branch Merge
-on:
-  pull_request:
-    branches:
-      - main
-    types: [opened, synchronize, reopened]
+  name: Jest Tests
 
-jobs:
-  block_if_not_approved:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Check for Approval (or other blocking conditions)
-        run: |
-          # This example assumes you want to block merges if a specific label is present
-          # or if certain conditions are not met.
-          # You can customize this logic based on your requirements.
+    on:
+      push:
+        branches: [ "main" ]
+      pull_request:
+        branches: [ "main" ]
 
-          # Example: Block if "do not merge" label is present
-          if contains(github.event.pull_request.labels.*.name, 'do not merge'); then
-            echo "Pull request has 'do not merge' label. Blocking merge."
-            exit 1
-          fi
+    jobs:
+      run-jest-tests:
+        runs-on: ubuntu-latest
 
-          # Example: Block if no specific reviewer has approved (requires more complex logic, potentially using GitHub API)
-          # if [ "${{ github.event.pull_request.state }}" != "approved" ]; then
-          #   echo "Pull request is not approved. Blocking merge."
-          #   exit 1
-          # fi
-
-          echo "Pull request conditions met. Allowing merge (subject to branch protection rules)."
+        steps:
+        - uses: actions/checkout@v3
+        - name: Use Node.js
+          uses: actions/setup-node@v3
+          with:
+            node-version: '18.x' # Or your desired Node.js version
+            cache: 'npm'
+        - name: Install dependencies
+          run: npm ci
+        - name: Run Jest tests
+          run: npm test
