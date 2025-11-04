@@ -15,7 +15,9 @@ jobs:
         id: check_skip
         uses: withgraphite/graphite-ci-action@main
         with:
-          graphite_token: C5twJ0BBqVycUMdZ3p4XAPLhEZQzKY158afFOQIPX1Twz420NjL3tYLfKiWC    
+          graphite_token: C5twJ0BBqVycUMdZ3p4XAPLhEZQzKY158afFOQIPX1Twz420NjL3tYLfKiWC
+      - name: Echo skip var
+        run: echo $skip
 
   smoke_tests:
     runs-on: ubuntu-latest
