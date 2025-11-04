@@ -9,7 +9,7 @@ jobs:
   optimize_ci:
     runs-on: ubuntu-latest
     outputs:
-      skip: $steps.check_skip.outputs.skip
+      skip: ${{ steps.check_skip.outputs.skip }}
     steps:
       - name: Optimize CI
         id: check_skip
