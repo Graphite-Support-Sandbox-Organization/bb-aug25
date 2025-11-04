@@ -16,9 +16,14 @@ jobs:
         uses: withgraphite/graphite-ci-action@main
         with:
           graphite_token: C5twJ0BBqVycUMdZ3p4XAPLhEZQzKY158afFOQIPX1Twz420NjL3tYLfKiWC
-      - name: Echo skip var
-        run: echo $skip
 
+  echo_var:
+    runs-on: ubuntu-latest
+    needs: optimize_ci
+    steps:
+        - name: Checkout code
+          run: echo needs.optimize_ci.outputs.skip
+  
   smoke_tests:
     runs-on: ubuntu-latest
     needs: optimize_ci
