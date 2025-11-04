@@ -18,6 +18,8 @@ jobs:
           graphite_token: C5twJ0BBqVycUMdZ3p4XAPLhEZQzKY158afFOQIPX1Twz420NjL3tYLfKiWC
       - name: Echo skip var
         run: echo $skip
+      - name: Echo skip var test 2
+        run: $steps.check_skip.outputs.skip
 
   smoke_tests:
     runs-on: ubuntu-latest
