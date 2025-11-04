@@ -1,11 +1,12 @@
-name: Add tested label on PR close
 
-on:
-  pull_request:
-    types: [closed]
-
-jobs:
-  show:
-    runs-on: ubuntu-latest
+      optimize_ci:
+    runs-on:  ubuntu-latest
+    outputs:
+      skip: ${{ steps.check_skip.outputs.skip }}
     steps:
-      - run: echo ${{ github.head_ref }} $GITHUB_REF
+      - name: Optimize CI
+        id: check_skip
+        uses: withgraphite/graphite-ci-action@main
+        with:
+          graphite_token: "C5twJ0BBqVycUMdZ3p4XAPLhEZQzKY158afFOQIPX1Twz420NjL3tYLfKiWC"
+  
