@@ -22,7 +22,7 @@ jobs:
     needs: optimize_ci
     steps:
         - name: Checkout code
-          run: echo needs.optimize_ci.outputs.skip
+          run: echo ${{needs.optimize_ci.outputs.skip}}
   
   smoke_tests:
     runs-on: ubuntu-latest
