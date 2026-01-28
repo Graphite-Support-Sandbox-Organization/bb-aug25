@@ -10,6 +10,3 @@ bbbbb
 bbbbbb
 bbbbb
 ffffff
-3
-
-bbbbb
