@@ -6,3 +6,8 @@ for(let i=0;i<5;i++){const d=document.createElement('div');d.className='tile';bo
 console.log('Answer (demo):', ANSWER);
 // expose for UI work in next PR
 window._WORDLE={ANSWER,WORDS};
+
+// UI helpers added in UI PR
+function revealAnswer(){alert('Answer (demo): '+window._WORDLE.ANSWER)}
+// simple keyboard trigger for demo
+window.addEventListener('keydown',e=>{if(e.key==='Enter')revealAnswer()})
