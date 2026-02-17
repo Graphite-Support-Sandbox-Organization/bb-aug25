@@ -6,11 +6,6 @@ on:
     branches-ignore:
       - "**/graphite-base/**"
 
-# Before running CI, cancel existing CI jobs for the same branch
-concurrency:
-  group: ci-${{ github.ref }}
-  cancel-in-progress: true
-
 jobs:
   optimize_ci:
     runs-on: ubuntu-latest
