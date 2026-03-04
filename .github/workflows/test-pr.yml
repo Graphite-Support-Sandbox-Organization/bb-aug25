@@ -1,0 +1,30 @@
+name: Manual PR Bot
+on:
+  workflow_dispatch: # This enables the manual "Run workflow" button
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  manual-pr:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Make changes
+        run: |
+          date +%s > manual_update.txt
+          echo "Automated changes made at $(date)" >> manual_update.txt
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v7
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: "Manual update via GitHub Action"
+          title: "Manual Automated Update"
+          body: "This PR was manually triggered using workflow_dispatch."
+          branch: "manual-bot-branch"
+          delete-branch: true # Deletes the branch after PR is merged
+

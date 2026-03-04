@@ -1,2 +1,2 @@
 # Exclude specific files
-faulty.js
+faulty.js linguist-generated=true
