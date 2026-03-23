@@ -1,0 +1,27 @@
+name: Test Matrix
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  test-matrix:
+    name: test-matrix ($ matrix.check )
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        check: [core-service, lambdas, other]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Run $ matrix.check  tests
+        run: |
+          echo "Running tests for: $ matrix.check "
+          # Replace these with real commands later, e.g.:
+          # if [ "$ matrix.check " = "core-service" ]; then npm test; fi
+          sleep 2
