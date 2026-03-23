@@ -1,4 +1,4 @@
-name: Test Matrix
+name: Unit & Integration Tests
 
 on:
   pull_request:
@@ -6,22 +6,56 @@ on:
     branches: [main]
 
 jobs:
-  test-matrix:
-    name: test-matrix ($ matrix.check )
+  check-changes:
+    name: Check changes
     runs-on: ubuntu-latest
+    outputs:
+      has-code-changes: $ steps.set.outputs.has-code-changes 
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
 
+      # Fake "detect changes" step.
+      # This always reports "true" so the matrix runs on PRs.
+      # (Push events will run anyway due to the `if:` on the matrix job.)
+      - id: set
+        name: Set has-code-changes
+        run: echo "has-code-changes=true" >> "$GITHUB_OUTPUT"
+
+  test:
+    name: Unit & Integration Tests ($ matrix.test_group )
+    needs: check-changes
+    if: needs.check-changes.outputs.has-code-changes == 'true' || github.event_name == 'push'
+    runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
-        check: [core-service, lambdas, other]
+        test_group: [lambdas, core-service, other]
+        include:
+          - test_group: lambdas
+            test_command: "echo 'Running fake lambdas tests' && sleep 10"
+          - test_group: core-service
+            test_command: "echo 'Running fake core-service tests' && sleep 10"
+          - test_group: other
+            test_command: "echo 'Running fake other tests' && sleep 10"
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Run $ matrix.check  tests
+      - name: Run fake tests
         run: |
-          echo "Running tests for: $ matrix.check "
-          # Replace these with real commands later, e.g.:
-          # if [ "$ matrix.check " = "core-service" ]; then npm test; fi
-          sleep 2
+          echo "Group: $ matrix.test_group "
+          echo "Command: $ matrix.test_command "
+          bash -lc "$ matrix.test_command "
+
+  test-report:
+    name: Test Report
+    needs: [check-changes, test]
+    runs-on: ubuntu-latest
+    if: (needs.check-changes.outputs.has-code-changes == 'true' || github.event_name == 'push') && always() && !cancelled()
+    steps:
+      - name: Report summary
+        run: |
+          echo "Fake report step"
+          echo "Matrix job result: $ needs.test.result "
