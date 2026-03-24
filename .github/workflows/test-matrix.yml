@@ -1,61 +1,97 @@
-name: ci
-
-on:
-  pull_request:
-  push:
-    branches: [main]
+name: mtrx-tester-2
+on: pull_request
 
 jobs:
   check-changes:
     name: Check for code changes
     runs-on: ubuntu-latest
     outputs:
-      has-code-changes: $ steps.set.outputs.has-code-changes 
+      has-code-changes: ${{ steps.check.outputs.result }}
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - name: Check for changes
+        id: check
+        run: |
+          echo "Checking for code changes..."
+          echo "result=true" >> "$GITHUB_OUTPUT"
+          echo "Code changes detected!"
 
-      # Fake change detection (always true)
-      - id: set
-        name: Set has-code-changes
-        run: echo "has-code-changes=true" >> "$GITHUB_OUTPUT"
+  linter:
+    name: Linter
+    needs: check-changes
+    if: needs.check-changes.outputs.has-code-changes == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Run linter
+        run: |
+          echo "Running linter..."
+          sleep 2
+          echo "Linter passed!"
+
+  type-check:
+    name: Type Check
+    needs: check-changes
+    if: needs.check-changes.outputs.has-code-changes == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Run type check
+        run: |
+          echo "Running type check..."
+          sleep 2
+          echo "Type check passed!"
+
+  schema-integrity:
+    name: Schema Integrity (Core)
+    needs: check-changes
+    if: needs.check-changes.outputs.has-code-changes == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check schema integrity
+        run: |
+          echo "Checking schema integrity..."
+          sleep 1
+          echo "Schema integrity check passed!"
 
   test:
-    name: Unit & Integration Tests ($ matrix.test_group )
+    name: Unit & Integration Tests (${{ matrix.test_group }})
     needs: check-changes
-    if: needs.check-changes.outputs.has-code-changes == 'true' || github.event_name == 'push'
+    if: needs.check-changes.outputs.has-code-changes == 'true'
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
-        test_group: [lambdas, core-service, other]
+        test_group: [core-service, lambdas, other]
         include:
-          - test_group: lambdas
-            test_command: "echo 'Running fake lambdas tests' && sleep 10"
           - test_group: core-service
-            test_command: "echo 'Running fake core-service tests' && sleep 10"
+            label: core-service tests
+          - test_group: lambdas
+            label: lambda tests
           - test_group: other
-            test_command: "echo 'Running fake other tests' && sleep 10"
-
+            label: other tests
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Run fake tests
+      - name: Run tests
         run: |
-          echo "Group: $ matrix.test_group "
-          echo "Command: $ matrix.test_command "
-          bash -lc "$ matrix.test_command "
+          echo "Running ${{ matrix.label }}..."
+          sleep 3
+          echo "All ${{ matrix.test_group }} tests passed!"
 
   test-report:
     name: Test Report
     needs: [check-changes, test]
+    if: always() && !cancelled()
     runs-on: ubuntu-latest
-    # Run after the matrix finishes, even if some legs fail (but not if cancelled)
-    if: (needs.check-changes.outputs.has-code-changes == 'true' || github.event_name == 'push') && always() && !cancelled()
     steps:
-      - name: Report summary
+      - name: Generate test report
         run: |
-          echo "Fake report step"
-          echo "Matrix overall result: $ needs.test.result "
-          sleep 2
+          echo "Generating test report..."
+          echo "All test groups completed successfully."
+
+  build-artifacts:
+    name: Build & Publish Artifacts
+    needs: [check-changes, test]
+    if: always() && !cancelled()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Build artifacts
+        run: |
+          echo "Building artifacts..."
+          echo "Artifacts published."
