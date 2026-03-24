@@ -1,4 +1,4 @@
-name: Unit & Integration Tests
+name: ci
 
 on:
   pull_request:
@@ -7,7 +7,7 @@ on:
 
 jobs:
   check-changes:
-    name: Check changes
+    name: Check for code changes
     runs-on: ubuntu-latest
     outputs:
       has-code-changes: $ steps.set.outputs.has-code-changes 
@@ -15,9 +15,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      # Fake "detect changes" step.
-      # This always reports "true" so the matrix runs on PRs.
-      # (Push events will run anyway due to the `if:` on the matrix job.)
+      # Fake change detection (always true)
       - id: set
         name: Set has-code-changes
         run: echo "has-code-changes=true" >> "$GITHUB_OUTPUT"
@@ -53,9 +51,11 @@ jobs:
     name: Test Report
     needs: [check-changes, test]
     runs-on: ubuntu-latest
+    # Run after the matrix finishes, even if some legs fail (but not if cancelled)
     if: (needs.check-changes.outputs.has-code-changes == 'true' || github.event_name == 'push') && always() && !cancelled()
     steps:
       - name: Report summary
         run: |
           echo "Fake report step"
-          echo "Matrix job result: $ needs.test.result "
+          echo "Matrix overall result: $ needs.test.result "
+          sleep 2
