@@ -1,4 +1,4 @@
-name: mtrx-tester-2
+name: mtrx-test-3
 on: pull_request
 
 jobs:
@@ -88,10 +88,11 @@ jobs:
   build-artifacts:
     name: Build & Publish Artifacts
     needs: [check-changes, test]
-    if: always() && !cancelled()
+    if: false
     runs-on: ubuntu-latest
     steps:
       - name: Build artifacts
         run: |
           echo "Building artifacts..."
           echo "Artifacts published."
+
