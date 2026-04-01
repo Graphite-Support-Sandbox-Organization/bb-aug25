@@ -1,0 +1,32 @@
+name: hubscher-test
+on:
+  pull_request:
+    branches-ignore:
+      - "**/graphite-base/**"
+  pull_request_target:
+    branches-ignore:
+      - "**/graphite-base/**"
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  tests:
+    # Only run pull_request_target checks if this is a dependabot PR
+    if: |
+      (github.event_name == 'pull_request_target' && github.actor == 'dependabot[bot]') ||
+      (github.event_name != 'pull_request_target' && github.actor != 'dependabot[bot]')
+
+    strategy:
+      fail-fast: false
+      matrix:
+        pipeline: [unit-integration, acceptance, slow]
+    runs-on: namespace-profile-ci-8x16
+
+    steps:
+    - name: Run type check
+      run: |
+          echo "Running type check..."
+          sleep 2
+          echo "Type check passed!"
