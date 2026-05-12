@@ -7,13 +7,6 @@ on:
       - "**/graphite-base/**"
 
 jobs:
-
-  echo_var:
-    runs-on: ubuntu-latest
-    needs: optimize_ci
-    steps:
-        - name: Checkout code
-          run: echo ${{needs.optimize_ci.outputs.skip}}
   
   smoke_tests:
     runs-on: ubuntu-latest
