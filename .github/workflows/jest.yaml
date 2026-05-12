@@ -7,16 +7,6 @@ on:
       - "**/graphite-base/**"
 
 jobs:
-  optimize_ci:
-    runs-on: ubuntu-latest
-    outputs:
-      skip: ${{ steps.check_skip.outputs.skip }}
-    steps:
-      - name: Optimize CI
-        id: check_skip
-        uses: withgraphite/graphite-ci-action@main
-        with:
-          graphite_token: ${{ secrets.GRAPHITE_TOKEN }}
 
   echo_var:
     runs-on: ubuntu-latest
@@ -27,12 +17,10 @@ jobs:
   
   smoke_tests:
     runs-on: ubuntu-latest
-    needs: optimize_ci
-    if: needs.optimize_ci.outputs.skip == 'false'
     steps:
         - name: Checkout code
           uses: actions/checkout@v4
         - name: Sleep/Delay timer
-          run: sleep 60
+          run: sleep 35
         - name: CI smoke test
           run: echo "✅ CI is running"
