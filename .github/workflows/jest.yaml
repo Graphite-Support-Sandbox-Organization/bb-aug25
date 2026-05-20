@@ -16,16 +16,23 @@ jobs:
         id: check_skip
         uses: withgraphite/graphite-ci-action@main
         with:
-          graphite_token: "C5twJ0BBqVycUMdZ3p4XAPlhEZQzKY158afFOQIPX1Twz420NjL3tYLfKiWC"
+          graphite_token: ${{ secrets.GRAPHITE_TOKEN }}
+
+  echo_var:
+    runs-on: ubuntu-latest
+    needs: optimize_ci
+    steps:
+        - name: Checkout code
+          run: echo ${{needs.optimize_ci.outputs.skip}}
 
   smoke_tests:
     runs-on: ubuntu-latest
     needs: optimize_ci
     if: needs.optimize_ci.outputs.skip == 'false'
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-      - name: Sleep/Delay timer
-        run: sleep 35
-      - name: CI smoke test
-        run: echo "✅ CI is running"
+        - name: Checkout code
+          uses: actions/checkout@v4
+        - name: Sleep/Delay timer
+          run: sleep 60
+        - name: CI smoke test
+          run: echo "✅ CI is running"
