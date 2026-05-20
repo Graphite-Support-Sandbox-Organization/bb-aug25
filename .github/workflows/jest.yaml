@@ -18,7 +18,6 @@ optimize_ci:
         with:
           graphite_token: "C5twJ0BBqVycUMdZ3p4XAPLhEZQzKY158afFOQIPX1Twz420NjL3tYLfKiWC"
   
-  
   smoke_tests:
     runs-on: ubuntu-latest
     needs: optimize_ci
