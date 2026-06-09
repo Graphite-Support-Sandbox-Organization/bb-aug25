@@ -14,7 +14,7 @@ jobs:
     steps:
       - name: Optimize CI
         id: check_skip
-        uses: cmoad/graphite-ci-action@upgrade-node-24
+        uses: withgraphite/graphite-ci-action@main
         with:
           graphite_token: ${{ secrets.GRAPHITE_TOKEN }}
 
