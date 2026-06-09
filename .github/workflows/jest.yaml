@@ -14,9 +14,14 @@ jobs:
     steps:
       - name: Optimize CI
         id: check_skip
-        uses: withgraphite/graphite-ci-action@upgrade-node-24
+        uses: cmoad/graphite-ci-action@upgrade-node-24
         with:
           graphite_token: ${{ secrets.GRAPHITE_TOKEN }}
+
+      - name: Debug action info
+        run: |
+          echo "Runner Node version: $(node --version)"
+          echo "Skip output: ${{ steps.check_skip.outputs.skip }}"
 
   echo_var:
     runs-on: ubuntu-latest
