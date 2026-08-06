@@ -1,0 +1,15 @@
+name: Optional failing check
+
+on:
+  pull_request:
+  push:
+  workflow_dispatch:
+
+jobs:
+  always-fail:
+    name: Optional failing check
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Always fail
+        run: exit 1
